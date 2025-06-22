@@ -4,8 +4,23 @@ from elevenlabs import stream
 import ollama
 from dotenv import load_dotenv
 import os
+import logging
+import sys
 
 load_dotenv()
+
+# Set up logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout),
+        logging.FileHandler(os.path.join(os.path.dirname(__file__), 'app.log'))
+    ]
+)
+logger = logging.getLogger('AI-Voice-Agent')
+
+logger.info("Application starting")
 
 
 class AIVoiceAgent:
@@ -98,6 +113,8 @@ class AIVoiceAgent:
         self.full_transcript.append({"role":"assistant", "content":full_text})
 
         self.start_transcription()
+
+        logger.info("Application ending")
 
 ai_voice_agent = AIVoiceAgent()
 ai_voice_agent.start_transcription()
